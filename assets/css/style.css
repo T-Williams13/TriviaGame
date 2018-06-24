@@ -1,0 +1,13 @@
+
+.box{
+    background-color: pink;
+    height: 500px;
+    width: 700px;
+
+};
+.jumbotron{
+    background-color: pink;
+    height: 500px;
+    width: 700px;
+    text-align: center
+};
