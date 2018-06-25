@@ -14,7 +14,7 @@
              question: "which of these is not a Spice Girl?",
              answer: ["scary spice", "sporty spice", "ginger spice", "oregano"],
              correct: "oregano"
-             //  gif:<iframe src="https://giphy.com/embed/BoEBnPhuWYYCs" width="480" height="361" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/spice-girls-wannabe-BoEBnPhuWYYCs">via GIPHY</a></p>;
+            // gif: <img src="assets/images/giphy.gif">
          },
          {
              question: "which character on Hey Arnold is secretly in love with Arnold?",
@@ -53,23 +53,29 @@
              $(".quiz").html("<h4>" + outOfTime + "</h4>");
              $(".quiz").append("<div>" + 'the correct answer was: ' + trivia[currentQAndA].correct + "<div>");
              //add gif
-             loading();
+             endGame();
+             
              //begin countdown and display next question at the end of the countdown
-             function loading() {
-                 setTimeout(nextQuestion, 1000 * 5);
-             }
+
 
 
 
          }
+
      }
 
-
+     function loading() {
+         setTimeout(nextQuestion, 1000 * 5);
+     }
 
      function nextQuestion() {
+         number = 5;
          currentQAndA++;
          loadTrivia();
-         number = 5;
+         runTimer();
+
+
+
 
      }
 
@@ -78,10 +84,10 @@
          clearInterval(intervalId);
      }
 
-function resetTimer(){
-    stop();
+     function resetTimer() {
+         stop();
 
-}
+     }
      //create click event for user's selected answer and store user's answer
      $("body").on("click", "div.response", function () {
 
@@ -98,16 +104,34 @@ function resetTimer(){
                  //add gif
 
                  //begin countdown and display next question at the end of the countdown
-                 setTimeout(nextQuestion, 1000 * 5);
+                 loading();
 
+             }
+             else {
+                 stop();
+                 $(".quiz").html("<h4>" + wrongAlert + "</h4>");
+                  $(".quiz").append("<div>" + 'the correct answer was: ' + trivia[currentQAndA].correct + "<div>");
+                    $(".quiz").append("<div>"  + trivia[currentQAndA].gif + "<div>");
+                 //add gif
+                 loading();
              }
 
          }
      })
 
 
+//Need to figure out endGame function to determine when it is time to display the end game screen. 
 
-
+ function endGame(){
+                 if(trivia[currentQAndA] === (trivia.length)){
+                     stop();
+                     
+                     $(".quiz").html("<h1>" + 'Done!' + "</h1>")
+                 }
+                 else{
+                     loading();
+                 }
+             }
 
      function loadTrivia() {
 
@@ -125,5 +149,6 @@ function resetTimer(){
      });
 
 
-
+//Need to write in values on the end of game screen for wins, losses and unanswered questions
+//Need to create a start over function at the end of the game. 
  });
