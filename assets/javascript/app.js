@@ -1,12 +1,14 @@
  $(document).ready(function () {
-     var timer = 30;
      var answered = false
      var correctAnswers = 0;
      var incorrectAnswers = 0;
      var unansweredQuestions = 0;
      var currentQAndA = 0
-     var number = 30;
+     var number = 5;
      var intervalId;
+     var outOfTime = "Out of time!"
+     var correctAlert = "Correct!"
+     var wrongAlert = "Wrong!"
 
      var trivia = [{
              question: "which of these is not a Spice Girl?",
@@ -26,13 +28,7 @@
          runTimer();
          $("#start-button").remove();
          loadTrivia();
-
-
-
      };
-
-
-
 
      //  When the stop button gets clicked, run the stop function.
      $("#stop").on("click", stop);
@@ -43,47 +39,75 @@
      function runTimer() {
          clearInterval(intervalId);
          intervalId = setInterval(decrement, 1000);
+
      }
+
 
      function decrement() {
          number--;
          $("#timer").text("Time Remaining: " + number + " seconds");
 
-         //  Once number hits zero...
+         //  If number gets to zero...
          if (number === 0) {
-             nextQuestion();
-
              stop();
+             $(".quiz").html("<h4>" + outOfTime + "</h4>");
+             $(".quiz").append("<div>" + 'the correct answer was: ' + trivia[currentQAndA].correct + "<div>");
+             //add gif
+             loading();
+             //begin countdown and display next question at the end of the countdown
+             function loading() {
+                 setTimeout(nextQuestion, 1000 * 5);
+             }
+
+
+
          }
      }
 
-     // stop function
-     function stop() {
-         clearInterval(intervalId);
-     }
+
 
      function nextQuestion() {
          currentQAndA++;
          loadTrivia();
+         number = 5;
+
      }
 
-     // $("div.response").on("click", function(event){
-     //create click event for user's selected answer
-     $("div.response").on("click", function () {
+     // stop timer function
+     function stop() {
+         clearInterval(intervalId);
+     }
 
-         var userAnswer = $(this).attr(".response");
-         if (userAnswer === trivia[currentQAndA].correct) {
-             console.log("jinkies!")
+function resetTimer(){
+    stop();
+
+}
+     //create click event for user's selected answer and store user's answer
+     $("body").on("click", "div.response", function () {
+
+         var userAnswer = $(this).text();
+         console.log(userAnswer);
+         checkAnswer()
+
+         //evaluate if anwer was correct
+         function checkAnswer() {
+             if (userAnswer === trivia[currentQAndA].correct) {
+                 stop();
+                 $(".quiz").html("<h4>" + correctAlert + "</h4>");
+
+                 //add gif
+
+                 //begin countdown and display next question at the end of the countdown
+                 setTimeout(nextQuestion, 1000 * 5);
+
+             }
+
          }
-
      })
 
-     //store user's answer
 
-     //evaluate if anwer was correct
-     function checkAnswer() {
 
-     }
+
 
      function loadTrivia() {
 
